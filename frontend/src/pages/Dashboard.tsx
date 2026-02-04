@@ -63,12 +63,15 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('')
   const [feedbackScoreFilter, setFeedbackScoreFilter] = useState(ALL_FILTER)
   const [feedbackUserFilter, setFeedbackUserFilter] = useState(ALL_FILTER)
+  const [prenotazioniUtenteFilter, setPrenotazioniUtenteFilter] = useState(ALL_FILTER)
+  const [prenotazioniAbitazioneFilter, setPrenotazioniAbitazioneFilter] = useState(ALL_FILTER)
+  const [abitazioniHostFilter, setAbitazioniHostFilter] = useState(ALL_FILTER)
 
   useEffect(() => {
     setPagePrenotazioni(1)
     setPageFeedback(1)
     setPageAbitazioni(1)
-  }, [searchQuery, feedbackScoreFilter, feedbackUserFilter])
+  }, [searchQuery, feedbackScoreFilter, feedbackUserFilter, prenotazioniUtenteFilter, prenotazioniAbitazioneFilter, abitazioniHostFilter])
 
   const load = () => {
     setError(null)
@@ -242,6 +245,8 @@ export default function Dashboard() {
   const q = searchQuery.trim().toLowerCase()
 
   const filteredPrenotazioni = prenotazioni.filter((p) => {
+    if (prenotazioniUtenteFilter !== ALL_FILTER && String(p.utenteId) !== prenotazioniUtenteFilter) return false
+    if (prenotazioniAbitazioneFilter !== ALL_FILTER && String(p.abitazioneId) !== prenotazioniAbitazioneFilter) return false
     const utente = getUtente(p.utenteId)
     const ab = getAbitazione(p.abitazioneId)
     const hay = `${utente?.nome ?? ''} ${utente?.cognome ?? ''} ${ab?.nome ?? ''} ${p.id}`.toLowerCase()
@@ -274,6 +279,7 @@ export default function Dashboard() {
   )
 
   const filteredAbitazioni = abitazioni.filter((a) => {
+    if (abitazioniHostFilter !== ALL_FILTER && String(a.hostId) !== abitazioniHostFilter) return false
     const hay = `${a.nome} ${a.indirizzo}`.toLowerCase()
     return q === '' || hay.includes(q)
   })
@@ -388,6 +394,29 @@ export default function Dashboard() {
 
           <TabsContent value="prenotazioni" className="mt-6">
             <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <Select value={prenotazioniUtenteFilter} onValueChange={setPrenotazioniUtenteFilter}>
+                  <SelectTrigger className="w-56"><SelectValue placeholder="Utente" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={ALL_FILTER}>Tutti utenti</SelectItem>
+                    {utenti.map((u) => (
+                      <SelectItem key={u.id} value={String(u.id)}>{u.nome} {u.cognome}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select value={prenotazioniAbitazioneFilter} onValueChange={setPrenotazioniAbitazioneFilter}>
+                  <SelectTrigger className="w-56"><SelectValue placeholder="Abitazione" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={ALL_FILTER}>Tutte abitazioni</SelectItem>
+                    {abitazioni.map((a) => (
+                      <SelectItem key={a.id} value={String(a.id)}>{a.nome}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button variant="outline" size="sm" onClick={() => { setPrenotazioniUtenteFilter(ALL_FILTER); setPrenotazioniAbitazioneFilter(ALL_FILTER); setPagePrenotazioni(1) }}>
+                  Reset filtri
+                </Button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {loading ? (
                   <p className="text-muted-foreground col-span-full">Caricamento...</p>
@@ -541,10 +570,24 @@ export default function Dashboard() {
 
           <TabsContent value="abitazioni" className="mt-6">
             <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <Select value={abitazioniHostFilter} onValueChange={setAbitazioniHostFilter}>
+                  <SelectTrigger className="w-56"><SelectValue placeholder="Host" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={ALL_FILTER}>Tutti host</SelectItem>
+                    {hosts.map((h) => (
+                      <SelectItem key={h.id} value={String(h.id)}>{h.codiceHost} – {h.nome} {h.cognome}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button variant="outline" size="sm" onClick={() => { setAbitazioniHostFilter(ALL_FILTER); setPageAbitazioni(1) }}>
+                  Reset filtri
+                </Button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {loading ? (
                   <p className="text-muted-foreground col-span-full">Caricamento...</p>
-                ) : abitazioni.length === 0 ? (
+                ) : filteredAbitazioni.length === 0 ? (
                   <p className="text-muted-foreground col-span-full">Nessuna abitazione.</p>
                 ) : (
                   paginatedAbitazioni.map((a) => (
@@ -563,10 +606,10 @@ export default function Dashboard() {
                   ))
                 )}
               </div>
-              {!loading && abitazioni.length > 0 && totalPagesAbitazioni > 1 && (
+              {!loading && filteredAbitazioni.length > 0 && totalPagesAbitazioni > 1 && (
                 <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t">
                   <p className="text-sm text-muted-foreground">
-                    Pagina {currentPageAbitazioni} di {totalPagesAbitazioni} · {abitazioni.length} abitazioni
+                    Pagina {currentPageAbitazioni} di {totalPagesAbitazioni} · {filteredAbitazioni.length} abitazioni
                   </p>
                   <div className="flex items-center gap-2">
                     <Button
