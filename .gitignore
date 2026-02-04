@@ -1,0 +1,28 @@
+# Backend (Java/Maven)
+backend/target/
+backend/*.jar
+backend/*.war
+*.class
+
+# Frontend (Node)
+frontend/node_modules/
+frontend/dist/
+
+# Environment / secrets
+.env
+.env.local
+*.env
+backend/config.properties
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
