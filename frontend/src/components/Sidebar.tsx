@@ -50,7 +50,6 @@ export default function Sidebar() {
           lg:translate-x-0
         `}
       >
-        {/* Logo */}
         <div className="mb-8 flex items-center justify-center">
           <img src="/logo.png" alt="Turista Facoltoso" className="h-10 w-10 object-contain" />
         </div>

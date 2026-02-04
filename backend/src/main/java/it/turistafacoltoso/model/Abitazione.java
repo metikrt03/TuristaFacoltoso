@@ -33,8 +33,6 @@ public class Abitazione {
         this.hostId = hostId;
     }
 
-    // Getters e Setters
-
     public Integer getId() {
         return id;
     }

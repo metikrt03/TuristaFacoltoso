@@ -9,8 +9,6 @@ import java.util.List;
 
 public class AbitazioneDAO {
 
-    // === CRUD ===
-
     public List<Abitazione> findAll() throws SQLException {
         List<Abitazione> abitazioni = new ArrayList<>();
         String sql = "SELECT * FROM abitazione ORDER BY id";
@@ -115,8 +113,6 @@ public class AbitazioneDAO {
         }
     }
 
-    // === QUERY SPECIFICA: Abitazioni per codice host ===
-
     public List<Abitazione> findByCodiceHost(String codiceHost) throws SQLException {
         List<Abitazione> abitazioni = new ArrayList<>();
         String sql = """
@@ -137,8 +133,6 @@ public class AbitazioneDAO {
         }
         return abitazioni;
     }
-
-    // === QUERY SPECIFICA: Abitazione più gettonata nell'ultimo mese ===
 
     public Abitazione findPiuGettonataUltimoMese() throws SQLException {
         String sql = """
@@ -162,8 +156,6 @@ public class AbitazioneDAO {
         return null;
     }
 
-    // === QUERY SPECIFICA: Media posti letto di tutte le abitazioni ===
-
     public Double getMediaPostiLetto() throws SQLException {
         String sql = "SELECT AVG(posti_letto) AS media FROM abitazione";
 
@@ -177,8 +169,6 @@ public class AbitazioneDAO {
         }
         return 0.0;
     }
-
-    // === Helper ===
 
     private Abitazione mapRowToAbitazione(ResultSet rs) throws SQLException {
         Abitazione a = new Abitazione();

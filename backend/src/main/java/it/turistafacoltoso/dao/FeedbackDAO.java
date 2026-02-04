@@ -9,8 +9,6 @@ import java.util.List;
 
 public class FeedbackDAO {
 
-    // === CRUD ===
-
     public List<Feedback> findAll() throws SQLException {
         List<Feedback> feedbacks = new ArrayList<>();
         String sql = "SELECT * FROM feedback ORDER BY id";
@@ -111,8 +109,6 @@ public class FeedbackDAO {
             return ps.executeUpdate() > 0;
         }
     }
-
-    // === Helper ===
 
     private Feedback mapRowToFeedback(ResultSet rs) throws SQLException {
         Feedback f = new Feedback();

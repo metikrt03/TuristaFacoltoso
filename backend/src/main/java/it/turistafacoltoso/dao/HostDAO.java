@@ -9,8 +9,6 @@ import java.util.List;
 
 public class HostDAO {
 
-    // === CRUD ===
-
     public List<Host> findAll() throws SQLException {
         List<Host> hosts = new ArrayList<>();
         String sql = """
@@ -80,7 +78,6 @@ public class HostDAO {
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false);
             try {
-                // Inserisco utente
                 try (PreparedStatement ps = conn.prepareStatement(sqlUtente)) {
                     ps.setString(1, host.getNome());
                     ps.setString(2, host.getCognome());
@@ -94,7 +91,6 @@ public class HostDAO {
                     }
                 }
 
-                // Inserisco host
                 try (PreparedStatement ps = conn.prepareStatement(sqlHost)) {
                     ps.setInt(1, host.getId());
                     ps.setString(2, host.getCodiceHost());
@@ -142,7 +138,6 @@ public class HostDAO {
     }
 
     public boolean delete(Integer id) throws SQLException {
-        // CASCADE su utente eliminerà anche host
         String sql = "DELETE FROM utente WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -152,8 +147,6 @@ public class HostDAO {
             return ps.executeUpdate() > 0;
         }
     }
-
-    // === QUERY SPECIFICA: Host con più prenotazioni nell'ultimo mese ===
 
     public List<Host> findHostPiuPrenotazioniUltimoMese() throws SQLException {
         List<Host> hosts = new ArrayList<>();
@@ -180,8 +173,6 @@ public class HostDAO {
         return hosts;
     }
 
-    // === QUERY SPECIFICA: Tutti i super-host (almeno 100 prenotazioni totali) ===
-
     public List<Host> findAllSuperHost() throws SQLException {
         List<Host> hosts = new ArrayList<>();
         String sql = """
@@ -205,8 +196,6 @@ public class HostDAO {
         }
         return hosts;
     }
-
-    // === Helper ===
 
     private Host mapRowToHost(ResultSet rs) throws SQLException {
         Host h = new Host();

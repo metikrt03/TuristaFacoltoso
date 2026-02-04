@@ -27,7 +27,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Inizializza connessione al database
         DatabaseConnection.init("config.properties");
         log.info("Connessione al database inizializzata");
 
@@ -44,7 +43,6 @@ public class Main {
             config.jsonMapper(new JavalinJackson(objectMapper, false));
         });
 
-        // Gestione eccezioni personalizzate
         app.exception(NotFoundException.class, (e, ctx) -> {
             log.warn("Risorsa non trovata: {}", e.getMessage());
             ctx.status(404).json(Map.of("error", e.getMessage()));
@@ -62,14 +60,12 @@ public class Main {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         });
 
-        // Registra i controller
         new UtenteController().registerRoutes(app);
         new HostController().registerRoutes(app);
         new AbitazioneController().registerRoutes(app);
         new PrenotazioneController().registerRoutes(app);
         new FeedbackController().registerRoutes(app);
 
-        // Avvia il server
         app.start(7000);
         log.info("Server avviato su http://localhost:7000");
     }

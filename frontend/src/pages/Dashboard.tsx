@@ -294,13 +294,11 @@ export default function Dashboard() {
 
   return (
     <div className="flex gap-8 w-full">
-      {/* Main content */}
       <div className="flex-1 min-w-0 space-y-6">
         <DashboardHeader title="Dashboard" subtitle="Bentornato! Ecco un riepilogo della tua attività." onSearch={setSearchQuery} />
         <ErrorMessage message={error} onDismiss={() => setError(null)} />
         <SuccessMessage message={success} onDismiss={() => setSuccess(null)} />
 
-        {/* Quick Stats */}
         <section>
           <h2 className="text-sm font-medium text-muted-foreground mb-4">Statistiche rapide</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -369,7 +367,6 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Tabs */}
         <Tabs defaultValue="prenotazioni" className="w-full">
           <TabsList className="bg-muted/50 border-b border-transparent rounded-none h-12 p-0 gap-0">
             <TabsTrigger 
@@ -636,7 +633,6 @@ export default function Dashboard() {
         </Tabs>
       </div>
 
-      {/* Right sidebar */}
       <aside className="hidden xl:block w-80 shrink-0 space-y-6">
         <Card className="shadow-sm">
           <CardContent className="pt-6">
@@ -725,7 +721,6 @@ export default function Dashboard() {
         </Card>
       </aside>
 
-      {/* Dialog Dettagli Prenotazione */}
       <Dialog open={!!dettaglioPrenotazione} onOpenChange={(open) => !open && setDettaglioPrenotazione(null)}>
         <DialogContent className="w-[calc(100vw-2rem)] max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -787,7 +782,6 @@ export default function Dashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog Modifica Prenotazione */}
       <Dialog open={!!editingPrenotazione} onOpenChange={(open) => !open && closeEditDialog()}>
         <DialogContent className="w-[calc(100vw-2rem)] max-w-md max-h-[90vh] flex flex-col">
           <DialogHeader className="shrink-0">
@@ -853,7 +847,6 @@ export default function Dashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog Modifica Abitazione */}
       <Dialog open={!!editingAbitazione} onOpenChange={(open) => !open && closeEditAbitazioneDialog()}>
         <DialogContent className="w-[calc(100vw-2rem)] max-w-md max-h-[90vh] flex flex-col">
           <DialogHeader className="shrink-0">

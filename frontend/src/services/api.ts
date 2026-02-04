@@ -21,7 +21,6 @@ function request<T>(url: string, options: RequestInit = {}): Promise<T> {
   })
 }
 
-// Utenti
 export const utentiApi = {
   getAll: () => request<Utente[]>('/api/utenti'),
   getById: (id: number) => request<Utente>(`/api/utenti/${id}`),
@@ -31,7 +30,6 @@ export const utentiApi = {
   topGiorni: () => request<any[]>('/api/utenti/report/top-giorni'),
 }
 
-// Host
 export const hostApi = {
   getAll: () => request<Host[]>('/api/host'),
   getById: (id: number) => request<Host>(`/api/host/${id}`),
@@ -43,7 +41,6 @@ export const hostApi = {
   superHost: () => request<any[]>('/api/host/report/super-host'),
 }
 
-// Abitazioni
 export const abitazioniApi = {
   getAll: () => request<Abitazione[]>('/api/abitazioni'),
   getById: (id: number) => request<Abitazione>(`/api/abitazioni/${id}`),
@@ -55,7 +52,6 @@ export const abitazioniApi = {
   mediaPostiLetto: () => request<number>('/api/abitazioni/report/media-posti-letto'),
 }
 
-// Prenotazioni
 export const prenotazioniApi = {
   getAll: () => request<Prenotazione[]>('/api/prenotazioni'),
   getById: (id: number) => request<Prenotazione>(`/api/prenotazioni/${id}`),
@@ -65,7 +61,6 @@ export const prenotazioniApi = {
   delete: (id: number) => request<void>(`/api/prenotazioni/${id}`, { method: 'DELETE' }),
 }
 
-// Feedback
 export const feedbackApi = {
   getAll: () => request<Feedback[]>('/api/feedback'),
   getById: (id: number) => request<Feedback>(`/api/feedback/${id}`),

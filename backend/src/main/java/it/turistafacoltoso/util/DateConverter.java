@@ -16,9 +16,6 @@ public class DateConverter {
         return ts.toLocalDateTime();
     }
 
-    /**
-     * Converte LocalDate in java.sql.Date (utile per i PreparedStatement)
-     */
     public static Date localDate2Date(LocalDate localDate) {
         return Date.valueOf(localDate);
     }

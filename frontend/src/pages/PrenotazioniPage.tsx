@@ -22,8 +22,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const emptyForm = { dataInizio: '', dataFine: '', utenteId: '', abitazioneId: '' }
+const PER_PAGE = 25
 
 export default function PrenotazioniPage() {
   const [list, setList] = useState<Prenotazione[]>([])
@@ -35,10 +37,16 @@ export default function PrenotazioniPage() {
   const [editing, setEditing] = useState<Prenotazione | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [page, setPage] = useState(1)
+
+  const totalPages = Math.max(1, Math.ceil(list.length / PER_PAGE))
+  const currentPage = Math.min(Math.max(1, page), totalPages)
+  const paginatedList = list.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE)
 
   const load = () => {
     setLoading(true)
     setError(null)
+    setPage(1)
     Promise.all([prenotazioniApi.getAll(), utentiApi.getAll(), abitazioniApi.getAll()])
       .then(([prenotazioni, u, a]) => {
         setList(prenotazioni)
@@ -266,7 +274,7 @@ export default function PrenotazioniPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {list.map((p) => {
+              {paginatedList.map((p) => {
                 const utente = utenti.find((u) => u.id === p.utenteId)
                 const abitazione = abitazioni.find((a) => a.id === p.abitazioneId)
                 return (
@@ -285,6 +293,19 @@ export default function PrenotazioniPage() {
               })}
             </TableBody>
           </Table>
+          {list.length > 0 && totalPages > 1 && (
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t mt-4">
+              <p className="text-sm text-muted-foreground">Pagina {currentPage} di {totalPages} · {list.length} prenotazioni</p>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={currentPage <= 1}>
+                  <ChevronLeft className="h-4 w-4" /> Precedente
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage >= totalPages}>
+                  Successiva <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

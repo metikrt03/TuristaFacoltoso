@@ -1,6 +1,5 @@
 package it.turistafacoltoso.util;
 
-// Pattern Singleton
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -48,7 +47,6 @@ public class DatabaseConnection {
             throw new RuntimeException("Execute init() first!");
         }
 
-        // Il driverManager me lo prendo dal package di postgresql
         return DriverManager.getConnection(url, user, pwd);
 
     }

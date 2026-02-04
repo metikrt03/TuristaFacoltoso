@@ -9,8 +9,6 @@ import java.util.List;
 
 public class PrenotazioneDAO {
 
-    // === CRUD ===
-
     public List<Prenotazione> findAll() throws SQLException {
         List<Prenotazione> prenotazioni = new ArrayList<>();
         String sql = "SELECT * FROM prenotazione ORDER BY id";
@@ -96,8 +94,6 @@ public class PrenotazioneDAO {
         }
     }
 
-    // === QUERY SPECIFICA: Ultima prenotazione per utente ===
-
     public Prenotazione findUltimaByUtenteId(Integer utenteId) throws SQLException {
         String sql = """
             SELECT * FROM prenotazione
@@ -118,8 +114,6 @@ public class PrenotazioneDAO {
         }
         return null;
     }
-
-    // === Helper ===
 
     private Prenotazione mapRowToPrenotazione(ResultSet rs) throws SQLException {
         Prenotazione p = new Prenotazione();

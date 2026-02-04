@@ -21,8 +21,6 @@ public class Prenotazione {
         this.abitazioneId = abitazioneId;
     }
 
-    // Getters e Setters
-
     public Integer getId() {
         return id;
     }

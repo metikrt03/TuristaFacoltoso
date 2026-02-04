@@ -19,8 +19,6 @@ public class Feedback {
         this.prenotazioneId = prenotazioneId;
     }
 
-    // Getters e Setters
-
     public Integer getId() {
         return id;
     }

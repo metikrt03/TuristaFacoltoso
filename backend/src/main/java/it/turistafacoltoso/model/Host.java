@@ -12,8 +12,6 @@ public class Host extends Utente {
         this.codiceHost = codiceHost;
     }
 
-    // Getter e Setter
-
     public String getCodiceHost() {
         return codiceHost;
     }
@@ -22,11 +20,6 @@ public class Host extends Utente {
         this.codiceHost = codiceHost;
     }
 
-    /**
-     * Verifica se l'host è un super-host (almeno 100 prenotazioni ricevute)
-     * @param totalePrenotazioni numero totale di prenotazioni ricevute
-     * @return true se è super-host
-     */
     public boolean isSuperHost(int totalePrenotazioni) {
         return totalePrenotazioni >= 100;
     }

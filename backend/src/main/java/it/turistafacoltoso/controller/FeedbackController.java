@@ -13,16 +13,13 @@ public class FeedbackController {
 
     public void registerRoutes(Javalin app) {
 
-        // GET /api/feedback - tutti i feedback
         app.get("/api/feedback", ctx -> {
             log.info("Richiesta lista feedback");
             ctx.json(feedbackService.findAll());
         });
 
-        // GET /api/feedback/{id} - feedback per id
         app.get("/api/feedback/{id}", ctx -> ControllerUtil.getById(ctx, "id", feedbackService::findById, "Feedback non trovato"));
 
-        // GET /api/feedback/prenotazione/{prenotazioneId} - feedback per prenotazione
         app.get("/api/feedback/prenotazione/{prenotazioneId}", ctx -> {
             int prenotazioneId = Integer.parseInt(ctx.pathParam("prenotazioneId"));
             Feedback f = feedbackService.findByPrenotazioneId(prenotazioneId);
@@ -30,7 +27,6 @@ public class FeedbackController {
             else ctx.status(404).json(java.util.Map.of("error", "Feedback non trovato per questa prenotazione"));
         });
 
-        // POST /api/feedback - crea feedback
         app.post("/api/feedback", ctx -> {
             Feedback feedback = ctx.bodyAsClass(Feedback.class);
             Feedback created = feedbackService.create(feedback);
@@ -38,7 +34,6 @@ public class FeedbackController {
             ctx.status(201).json(created);
         });
 
-        // PUT /api/feedback/{id} - modifica feedback
         app.put("/api/feedback/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             Feedback feedback = ctx.bodyAsClass(Feedback.class);
@@ -46,7 +41,6 @@ public class FeedbackController {
             ctx.json(updated);
         });
 
-        // DELETE /api/feedback/{id} - elimina feedback
         app.delete("/api/feedback/{id}", ctx -> {
             log.info("Eliminato feedback con id: {}", ctx.pathParam("id"));
             ControllerUtil.deleteById(ctx, "id", feedbackService::delete, "Feedback non trovato");

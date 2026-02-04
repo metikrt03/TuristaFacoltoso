@@ -14,8 +14,6 @@ import it.turistafacoltoso.util.DatabaseConnection;
 
 public class UtenteDAOImpl implements UtenteDAO {
 
-    // === CRUD ===
-
     @Override
     public List<Utente> findAll() {
         List<Utente> utenti = new ArrayList<>();
@@ -125,8 +123,6 @@ public class UtenteDAOImpl implements UtenteDAO {
         }
     }
 
-    // === QUERY SPECIFICA: Top 5 utenti con più giorni prenotati nell'ultimo mese ===
-
     @Override
     public List<Utente> findTop5UtentiPiuGiorniUltimoMese() {
         List<Utente> utenti = new ArrayList<>();
@@ -153,8 +149,6 @@ public class UtenteDAOImpl implements UtenteDAO {
         }
         return utenti;
     }
-
-    // === Helper ===
 
     private Utente mapRowToUtente(ResultSet rs) throws SQLException {
         Utente u = new Utente();

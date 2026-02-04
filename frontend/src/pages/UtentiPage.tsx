@@ -22,8 +22,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PER_PAGE = 25
 const emptyForm = { nome: '', cognome: '', email: '', indirizzo: '' }
 
 export default function UtentiPage() {
@@ -34,10 +36,19 @@ export default function UtentiPage() {
   const [editing, setEditing] = useState<Utente | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [page, setPage] = useState(1)
+
+  const totalPages = Math.max(1, Math.ceil(list.length / PER_PAGE))
+  const currentPage = Math.min(Math.max(1, page), totalPages)
+  const paginatedList = list.slice(
+    (currentPage - 1) * PER_PAGE,
+    currentPage * PER_PAGE
+  )
 
   const load = () => {
     setLoading(true)
     setError(null)
+    setPage(1)
     utentiApi.getAll()
       .then(setList)
       .catch((e) => setError(e.message))
@@ -192,7 +203,7 @@ export default function UtentiPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {list.map((u) => (
+              {paginatedList.map((u) => (
                 <TableRow key={u.id}>
                   <TableCell>{u.id}</TableCell>
                   <TableCell>{u.nome}</TableCell>
@@ -207,6 +218,31 @@ export default function UtentiPage() {
               ))}
             </TableBody>
           </Table>
+          {list.length > 0 && totalPages > 1 && (
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t mt-4">
+              <p className="text-sm text-muted-foreground">
+                Pagina {currentPage} di {totalPages} · {list.length} utenti
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage <= 1}
+                >
+                  <ChevronLeft className="h-4 w-4" /> Precedente
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage >= totalPages}
+                >
+                  Successiva <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -19,8 +19,6 @@ public class Utente {
         this.indirizzo = indirizzo;
     }
 
-    // Getters e Setters
-
     public Integer getId() {
         return id;
     }
