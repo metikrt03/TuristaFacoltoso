@@ -34,6 +34,8 @@ const emptyEditFormAbitazione = {
   nome: '', indirizzo: '', locali: '', postiLetto: '', piano: '', prezzo: '', dataInizio: '', dataFine: '', hostId: '',
 }
 
+const ALL_FILTER = '__all__'
+
 function formatDate(s: string) {
   return new Date(s).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' })
 }
@@ -59,10 +61,9 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [feedbackScoreFilter, setFeedbackScoreFilter] = useState('')
-  const [feedbackUserFilter, setFeedbackUserFilter] = useState('')
+  const [feedbackScoreFilter, setFeedbackScoreFilter] = useState(ALL_FILTER)
+  const [feedbackUserFilter, setFeedbackUserFilter] = useState(ALL_FILTER)
 
-  // Quando cambia la query di ricerca o i filtri, torniamo a pagina 1 per le liste
   useEffect(() => {
     setPagePrenotazioni(1)
     setPageFeedback(1)
@@ -256,9 +257,9 @@ export default function Dashboard() {
   )
 
   const filteredFeedback = feedback.filter((f) => {
-    if (feedbackScoreFilter !== '' && Number(feedbackScoreFilter) !== f.punteggio) return false
+    if (feedbackScoreFilter !== ALL_FILTER && Number(feedbackScoreFilter) !== f.punteggio) return false
     const pren = prenotazioni.find((p) => p.id === f.prenotazioneId)
-    if (feedbackUserFilter !== '' && (!pren || String(pren.utenteId) !== feedbackUserFilter)) return false
+    if (feedbackUserFilter !== ALL_FILTER && (!pren || String(pren.utenteId) !== feedbackUserFilter)) return false
     const utente = pren ? getUtente(pren.utenteId) : undefined
     const abit = pren ? getAbitazione(pren.abitazioneId) : undefined
     const hay = `${utente?.nome ?? ''} ${utente?.cognome ?? ''} ${f.titolo ?? ''} ${f.testo ?? ''} ${abit?.nome ?? ''}`.toLowerCase()
@@ -463,7 +464,7 @@ export default function Dashboard() {
                 <Select value={feedbackScoreFilter} onValueChange={setFeedbackScoreFilter}>
                   <SelectTrigger className="w-40"><SelectValue placeholder="Punteggio" /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Tutti punteggi</SelectItem>
+                    <SelectItem value={ALL_FILTER}>Tutti punteggi</SelectItem>
                     <SelectItem value="5">5</SelectItem>
                     <SelectItem value="4">4</SelectItem>
                     <SelectItem value="3">3</SelectItem>
@@ -474,13 +475,13 @@ export default function Dashboard() {
                 <Select value={feedbackUserFilter} onValueChange={setFeedbackUserFilter}>
                   <SelectTrigger className="w-56"><SelectValue placeholder="Utente" /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Tutti utenti</SelectItem>
+                    <SelectItem value={ALL_FILTER}>Tutti utenti</SelectItem>
                     {utenti.map((u) => (
                       <SelectItem key={u.id} value={String(u.id)}>{u.nome} {u.cognome}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                <Button variant="outline" size="sm" onClick={() => { setFeedbackScoreFilter(''); setFeedbackUserFilter(''); setPageFeedback(1) }}>
+                <Button variant="outline" size="sm" onClick={() => { setFeedbackScoreFilter(ALL_FILTER); setFeedbackUserFilter(ALL_FILTER); setPageFeedback(1) }}>
                   Reset filtri
                 </Button>
               </div>
