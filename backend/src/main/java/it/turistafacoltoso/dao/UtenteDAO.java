@@ -1,13 +1,9 @@
 package it.turistafacoltoso.dao;
 
-import it.turistafacoltoso.model.Utente;
-
 import java.util.List;
 
-/**
- * Interfaccia DAO per Utente: definisce le operazioni CRUD e le query specifiche.
- * Gli errori di accesso dati sono propagati come DataAccessException (runtime).
- */
+import it.turistafacoltoso.model.Utente;
+
 public interface UtenteDAO {
 
     // === CREATE ===

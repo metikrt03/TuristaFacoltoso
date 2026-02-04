@@ -1,16 +1,17 @@
 package it.turistafacoltoso.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 import it.turistafacoltoso.exception.DataAccessException;
 import it.turistafacoltoso.model.Utente;
 import it.turistafacoltoso.util.DatabaseConnection;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Implementazione JDBC del DAO per Utente.
- */
 public class UtenteDAOImpl implements UtenteDAO {
 
     // === CRUD ===
